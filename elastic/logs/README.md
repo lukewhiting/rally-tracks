@@ -338,7 +338,8 @@ In order to optimise indexing throughput, users may wish to consider modifying t
 This challenge benchmarks Elasticsearch's Data Stream Lifecycle (DLM) feature. It automatically configures data streams to use DLM and allows you to test and measure:
 
 - Rollover behavior with different poll intervals
-- Impact of different rollover conditions  
+- Impact of different rollover conditions
+- Herd effects of updating frozen settings on all data streams
 - Overall lifecycle coordinator overhead
 
 The challenge indexes data and waits for lifecycle operations to complete before collecting statistics. Key parameters include:
@@ -348,6 +349,7 @@ The challenge indexes data and waits for lifecycle operations to complete before
 - `dlm_wait_time` (default: `60`) - Seconds to wait for lifecycle operations
 - `dlm_datastream_count` (default: `10000`) - Number of data streams to create
 - `dlm_retention` (default: `90d`) - Retention period before deletion
+- `dlm_frozen_after` (default: null) - The time unit to wait before freezing data streams after they have been created and populated
 - `lifecycle` - Set to `dlm` to enable Data Lifecycle Management
 
 **Note:** This challenge automatically sets `lifecycle:dlm` - you do not need to pass it as a parameter.

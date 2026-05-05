@@ -109,6 +109,45 @@
         "bulk-size": {{ p_bulk_size }}
       }
     },
+    {% if dlm_frozen_after is defined %}
+    {# mutate a copy so as not to override in other challenges. shallow copy is ok since we're changing a top-level element.' #}
+      {% set dlm_snapshot_repo_settings = p_snapshot_repo_settings.copy() %}
+    {# randomize base path to avoid clashes when running concurrent benchmarks #}
+      {% set _=dlm_snapshot_repo_settings.update({"base_path":"dlm-"+((now|int)|string)}) %}
+    {
+      "name": "create-default-repository",
+      "operation": {
+        "operation-type": "create-snapshot-repository",
+        "repository": {{ p_snapshot_repo_name | tojson }},
+        "body": {
+          "type": {{ p_snapshot_repo_type | tojson }},
+          "settings": {{ dlm_snapshot_repo_settings | tojson(indent=2)}}
+        }
+      }
+    },
+    {
+      "name": "configure-default-repository",
+      "operation": {
+        "operation-type": "put-settings",
+        "body": {
+          "persistent" : {
+            "repositories.default_repository" : {{ p_snapshot_repo_name | tojson }}
+          }
+        }
+      }
+    },
+    {
+      "name": "update-frozen-after-setting",
+      "operation": {
+        "operation-type": "raw-request",
+        "method": "PUT",
+        "path": "/_data_stream/dlm-benchmark-*/_lifecycle",
+        "body": {
+          "frozen_after": "{{dlm_frozen_after | default("5s")}}"
+        }
+      }
+    }
+    {%- endif %}
     {
       "name": "wait-for-data-stream-lifecycle",
       "operation": {
