@@ -146,7 +146,7 @@
           "frozen_after": "{{dlm_frozen_after | default("5s")}}"
         }
       }
-    }
+    },
     {%- endif %}
     {
       "name": "wait-for-data-stream-lifecycle",
