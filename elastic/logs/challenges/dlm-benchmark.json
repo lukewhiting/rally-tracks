@@ -147,6 +147,14 @@
         }
       }
     },
+    {
+      "name": "rollover-data-streams",
+      "operation": {
+        "operation-type": "raw-request",
+        "method": "POST",
+        "path": "/dlm-benchmark-*/_rollover"
+      }
+    },
     {%- endif %}
     {
       "name": "wait-for-data-stream-lifecycle",
