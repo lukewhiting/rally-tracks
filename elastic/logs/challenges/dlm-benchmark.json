@@ -104,7 +104,10 @@
       "name": "bulk-index",
       "operation": {
         "operation-type": "raw-bulk",
-        "param-source": "dlm-bulk-source"
+        "param-source": "dlm-bulk-source",
+        "data-stream-prefix": "dlm-benchmark-",
+        "data-stream-count": {{ dlm_datastream_count | default(10000) }},
+        "bulk-size": {{ p_bulk_size }}
       },
       "clients": {{ p_bulk_indexing_clients }},
       "params": {
