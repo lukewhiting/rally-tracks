@@ -36,6 +36,10 @@
         "template": "track-data-stream-lifecycle",
         "body": {
           "template": {
+            "settings": {
+              "number_of_shards": 1,
+              "number_of_replicas": 0
+            },
             "lifecycle": {
               "data_retention": "{{ dlm_retention | default("90d")}}",
               "enabled": true
