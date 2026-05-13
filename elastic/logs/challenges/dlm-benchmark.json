@@ -93,12 +93,7 @@
       },
       "clients": 8,
       "warmup-iterations": 0,
-      "iterations": {{ dlm_datastream_count | default(10000) }},
-      "params": {
-        "data-stream-prefix": "dlm-benchmark----",
-        "start-index": 11,
-        "ignore-existing": false
-      }
+      "iterations": {{ dlm_datastream_count | default(10000) }}
     },
     {
       "name": "bulk-index",
@@ -109,12 +104,7 @@
         "data-stream-count": {{ dlm_datastream_count | default(10000) }},
         "bulk-size": {{ p_bulk_size }}
       },
-      "clients": {{ p_bulk_indexing_clients }},
-      "params": {
-        "data-stream-prefix": "dlm-benchmark----",
-        "data-stream-count": 10,
-        "bulk-size": 2000
-      }
+      "clients": {{ p_bulk_indexing_clients }}
     },
     {% if dlm_frozen_after is defined %}
     {# mutate a copy so as not to override in other challenges. shallow copy is ok since we're changing a top-level element.' #}
