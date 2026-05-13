@@ -92,7 +92,6 @@
         "start-index": 0
       },
       "clients": 8,
-      "warmup-iterations": 0,
       "iterations": {{ dlm_datastream_count | default(10000) }}
     },
     {
