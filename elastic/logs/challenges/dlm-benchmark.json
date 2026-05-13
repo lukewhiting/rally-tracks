@@ -95,8 +95,8 @@
       "warmup-iterations": 0,
       "iterations": {{ dlm_datastream_count | default(10000) }},
       "params": {
-        "data-stream-prefix": "dlm-benchmark-",
-        "start-index": 0,
+        "data-stream-prefix": "dlm-benchmark----",
+        "start-index": 11,
         "ignore-existing": false
       }
     },
@@ -111,9 +111,9 @@
       },
       "clients": {{ p_bulk_indexing_clients }},
       "params": {
-        "data-stream-prefix": "dlm-benchmark-",
-        "data-stream-count": {{ dlm_datastream_count | default(10000) }},
-        "bulk-size": {{ p_bulk_size }}
+        "data-stream-prefix": "dlm-benchmark----",
+        "data-stream-count": 10,
+        "bulk-size": 2000
       }
     },
     {% if dlm_frozen_after is defined %}
