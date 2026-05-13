@@ -73,6 +73,7 @@ def register(registry):
     registry.register_param_source("datastream-source", DataStreamParamSource)
     registry.register_param_source("create-datastream-source", CreateDataStreamParamSource)
     registry.register_param_source("sequential-datastream-source", SequentialDataStreamParamSource)
+    registry.register_param_source("rollover-datastream-source", RolloverDataStreamParamSource)
     registry.register_param_source("dlm-bulk-source", DLMBulkIndexParamSource)
     registry.register_runner("create-datastream", datastream.create, async_runner=True)
     registry.register_runner("compression-statistics", datastream.compression_stats, async_runner=True)

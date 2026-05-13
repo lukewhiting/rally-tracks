@@ -300,3 +300,29 @@ def test_dlm_bulk_infinite():
     for _ in range(100):
         params = source.params()
         assert params is not None
+
+
+def test_rollover_datastream_partition():
+    """Test partitioning across multiple clients."""
+    source = RolloverDataStreamParamSource(StaticTrack(), params={"data-stream-prefix": "test-ds"})
+
+    # Partition into 3 clients
+    partition_0 = source.partition(0, 3)
+    partition_1 = source.partition(1, 3)
+    partition_2 = source.partition(2, 3)
+
+    # Each partition should generate non-overlapping names
+    # Client 0: 0, 3, 6, 9...
+    assert partition_0.params()["path"] == "/test-ds-0/_rollover"
+    assert partition_0.params()["path"] == "/test-ds-3/_rollover"
+    assert partition_0.params()["path"] == "/test-ds-6/_rollover"
+
+    # Client 1: 1, 4, 7, 10...
+    assert partition_1.params()["path"] == "/test-ds-1/_rollover"
+    assert partition_1.params()["path"] == "/test-ds-4/_rollover"
+    assert partition_1.params()["path"] == "/test-ds-7/_rollover"
+
+    # Client 2: 2, 5, 8, 11...
+    assert partition_2.params()["path"] == "/test-ds-2/_rollover"
+    assert partition_2.params()["path"] == "/test-ds-5/_rollover"
+    assert partition_2.params()["path"] == "/test-ds-8/_rollover"

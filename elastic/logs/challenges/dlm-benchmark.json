@@ -147,9 +147,11 @@
       "name": "rollover-data-streams",
       "operation": {
         "operation-type": "raw-request",
-        "method": "POST",
-        "path": "/dlm-benchmark-*/_rollover"
-      }
+        "param-source": "rollover-datastream-source",
+        "data-stream-prefix": "dlm-benchmark"
+      },
+      "clients": {{ p_bulk_indexing_clients }},
+      "iterations": {{ dlm_datastream_count | default(10000) }}
     },
     {%- endif %}
     {

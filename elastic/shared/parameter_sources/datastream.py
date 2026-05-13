@@ -195,3 +195,29 @@ class DLMBulkIndexParamSource:
         body = "\n".join(bulk_lines) + "\n"
 
         return {"body": body, "action-metadata-present": True, "bulk-size": self._bulk_size, "unit": "docs"}
+
+"""
+Provides a param source for use on the rollover operation. This allows us to rollover multiple data streams directly by
+name since the rollover API does not allow wildcard usage.
+"""
+
+class RolloverDataStreamParamSource:
+    def __init__(self, track, params, **kwargs):
+        self._data_stream_prefix = params.get("data-stream-prefix", "datastream")
+        self._index = 0
+        self._step = 1
+        self.infinite = False
+
+    def partition(self, partition_index, total_partitions):
+        partitioned = RolloverDataStreamParamSource.__new__(RolloverDataStreamParamSource)
+        partitioned._data_stream_prefix = self._data_stream_prefix
+        partitioned._index = self._index + partition_index
+        partitioned._step = total_partitions
+        partitioned.infinite = False
+        return partitioned
+
+    def params(self):
+        index = self._index
+        path = f"/{self._data_stream_prefix}-{index}/_rollover"
+        self._index = self._index + self._step
+        return {"method": "POST", "path": path}
