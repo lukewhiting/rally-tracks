@@ -22,6 +22,7 @@ from shared.parameter_sources.datastream import (
     DataStreamParamSource,
     DLMBulkIndexParamSource,
     SequentialDataStreamParamSource,
+    RolloverDataStreamParamSource,
 )
 from shared.parameter_sources.initial_indices import InitialIndicesParamSource
 from shared.parameter_sources.processed import ProcessedCorpusParamSource
