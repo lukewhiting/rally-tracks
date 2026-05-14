@@ -133,6 +133,16 @@
       }
     },
     {
+      "name": "rollover-data-streams",
+      "operation": {
+        "operation-type": "raw-request",
+        "param-source": "rollover-datastream-source",
+        "data-stream-prefix": "dlm-benchmark"
+      },
+      "clients": {{ p_bulk_indexing_clients }},
+      "iterations": {{ dlm_datastream_count | default(10000) }}
+    },
+    {
       "name": "update-frozen-after-setting",
       "operation": {
         "operation-type": "raw-request",
@@ -142,16 +152,6 @@
           "frozen_after": "{{dlm_frozen_after | default("5s")}}"
         }
       }
-    },
-    {
-      "name": "rollover-data-streams",
-      "operation": {
-        "operation-type": "raw-request",
-        "param-source": "rollover-datastream-source",
-        "data-stream-prefix": "dlm-benchmark"
-      },
-      "clients": {{ p_bulk_indexing_clients }},
-      "iterations": {{ dlm_datastream_count | default(10000) }}
     },
     {%- endif %}
     {
