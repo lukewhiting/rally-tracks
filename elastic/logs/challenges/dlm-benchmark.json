@@ -83,6 +83,9 @@
         }
       }
     },
+    {# to avoid multiplying the provided data stream count, adjust the number of data streams by on the number of clients that will create them #}
+    {% set dlm_clients = p_bulk_indexing_clients, %}
+    {% set dlm_adjusted_data_stream_count = ((dlm_datastream_count | default(800)) // dlm_clients) %}
     {
       "name": "create-datastreams",
       "operation": {
@@ -91,8 +94,8 @@
         "data-stream-prefix": "dlm-benchmark",
         "start-index": 0
       },
-      "clients": 8,
-      "iterations": {{ dlm_datastream_count | default(10000) }}
+      "clients": {{ dlm_clients }},
+      "iterations": {{ dlm_adjusted_data_stream_count }}
     },
     {
       "name": "bulk-index",
@@ -100,10 +103,10 @@
         "operation-type": "raw-bulk",
         "param-source": "dlm-bulk-source",
         "data-stream-prefix": "dlm-benchmark",
-        "data-stream-count": {{ dlm_datastream_count | default(10000) }},
+        "data-stream-count": {{ dlm_adjusted_data_stream_count }},
         "bulk-size": {{ p_bulk_size }}
       },
-      "clients": {{ p_bulk_indexing_clients }}
+      "clients": {{ dlm_clients }}
     },
     {% if dlm_frozen_after is defined %}
     {# mutate a copy so as not to override in other challenges. shallow copy is ok since we're changing a top-level element.' #}
@@ -139,8 +142,8 @@
         "param-source": "rollover-datastream-source",
         "data-stream-prefix": "dlm-benchmark"
       },
-      "clients": {{ p_bulk_indexing_clients }},
-      "iterations": {{ dlm_datastream_count | default(10000) }}
+      "clients": {{ dlm_clients }},
+      "iterations": {{ dlm_adjusted_data_stream_count }}
     },
     {
       "name": "update-frozen-after-setting",
