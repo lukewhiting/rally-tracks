@@ -106,7 +106,8 @@
         "data-stream-count": {{ dlm_adjusted_data_stream_count }},
         "bulk-size": {{ p_bulk_size }}
       },
-      "clients": {{ dlm_clients }}
+      "clients": {{ dlm_clients }},
+      "iterations": {{ dlm_adjusted_data_stream_count }}
     },
     {% if dlm_frozen_after is defined %}
     {# mutate a copy so as not to override in other challenges. shallow copy is ok since we're changing a top-level element.' #}
