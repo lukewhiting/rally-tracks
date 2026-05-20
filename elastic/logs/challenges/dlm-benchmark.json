@@ -84,8 +84,8 @@
       }
     },
     {# to avoid multiplying the provided data stream count, adjust the number of data streams by on the number of clients that will create them #}
-    {% set dlm_clients = p_bulk_indexing_clients, %}
-    {% set dlm_adjusted_data_stream_count = (dlm_datastream_count | default(800) | int // dlm_clients) %}
+    {% set dlm_clients = p_bulk_indexing_clients %}
+    {% set dlm_adjusted_data_stream_count = dlm_datastream_count | default(800) | int // dlm_clients %}
     {
       "name": "create-datastreams",
       "operation": {
